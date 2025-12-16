@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Kerattila\X509Auth\Console;
 
 use Illuminate\Console\Command;
@@ -42,7 +44,7 @@ class GenerateRootCA extends Command
             $numbits,
             $days
         ))->generate(
-                $this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE
-            );
+            $this->getOutput()->getVerbosity() >= OutputInterface::VERBOSITY_VERBOSE
+        );
     }
 }

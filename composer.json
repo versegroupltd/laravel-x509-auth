@@ -4,9 +4,17 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": ">=7.4.0",
+        "php": "^8.2",
         "ext-openssl": "*",
-        "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0"
+        "illuminate/support": "^11.0|^12.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.18",
+        "orchestra/testbench": "^9.0|^10.0",
+        "pestphp/pest": "^3.8",
+        "pestphp/pest-plugin-laravel": "^3.2",
+        "phpunit/phpunit": "^11.0",
+        "rector/rector": "^1.2"
     },
     "suggest": {
         "spatie/ssl-certificate": "The class provided by this package makes it incredibly easy to query the properties on an ssl certificate. "
@@ -23,6 +31,11 @@
             "Kerattila\\X509Auth\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Kerattila\\X509Auth\\Tests\\": "tests/"
+        }
+    },
     "extra": {
         "laravel": {
             "providers": [
@@ -31,6 +44,14 @@
         }
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "format": "vendor/bin/pint",
+        "refactor": "vendor/bin/rector process"
     }
 }

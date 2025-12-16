@@ -1,13 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Kerattila\X509Auth\Exceptions;
 
 use Exception;
 
 /**
  * Class OpensslException
- * @package Kerattila\X509Auth\Exceptions
  */
-class OpensslException extends Exception
-{
-}
+class OpensslException extends Exception {}

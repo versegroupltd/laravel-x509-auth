@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'workdir' => base_path(),
     'user_class' => \App\User::class,
@@ -9,9 +11,9 @@ return [
         'rules' => [
             /** SSL parameter === user field */
             'SSL_CLIENT_M_SERIAL' => 'username',
-            'SSL_CLIENT_S_DN_Email' => 'email'
+            'SSL_CLIENT_S_DN_Email' => 'email',
         ],
-        'auto_login' => true
+        'auto_login' => true,
     ],
     'root_ca' => [
         'private_key_name' => 'root_ca_private',
@@ -24,8 +26,8 @@ return [
             'ST' => 'Mures', // State
             'L' => 'Targu Mures', // Locality
             'O' => 'ACME Corporation', // Organzization
-            'CN' => 'domain.com' // Common name
-        ]
+            'CN' => 'domain.com', // Common name
+        ],
     ],
     'signed_cert' => [
         'private_key_name' => 'private',
@@ -46,7 +48,7 @@ return [
         'alt_names' => [
             'domain.com',
             'domain.net',
-            'domain.eu'
-        ]
-    ]
+            'domain.eu',
+        ],
+    ],
 ];

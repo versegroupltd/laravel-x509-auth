@@ -1,16 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Kerattila\X509Auth\Middleware;
 
 use Closure;
+use Illuminate\Contracts\Auth\Factory as AuthFactory;
 use Illuminate\Http\Request;
 use Kerattila\X509Auth\Certificate\ClientCertificate;
 use Kerattila\X509Auth\Exceptions\InvalidClientCertificateException;
-use Illuminate\Contracts\Auth\Factory as AuthFactory;
 
 /**
  * Class X509
- * @package Kerattila\X509Auth\Middleware
  */
 class X509
 {
@@ -22,7 +23,6 @@ class X509
     /**
      * Create a new middleware instance.
      *
-     * @param  \Illuminate\Contracts\Auth\Factory $authFactory
      * @return void
      */
     public function __construct(AuthFactory $authFactory)
@@ -33,16 +33,15 @@ class X509
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @return mixed
      */
     public function handle(Request $request, Closure $next, ?string $guard = null)
     {
         $x509Enabled = config('x509-auth.middleware.enabled');
-        if($x509Enabled) {
+        if ($x509Enabled) {
             /**
              * Validate certificate and check if there is any user
+             *
              * @var ClientCertificate $certificate
              */
             $certificate = $this->validateRequestCertificate($request);
@@ -58,15 +57,11 @@ class X509
         return $next($request);
     }
 
-    /**
-     * @param $request
-     * @return ClientCertificate|null
-     */
     protected function validateRequestCertificate($request): ?ClientCertificate
     {
         /** @var ClientCertificate $certificate */
         $certificate = $request->getClientCertificate();
-        if (!$certificate->isValid()) {
+        if (! $certificate->isValid()) {
             throw new InvalidClientCertificateException('Certificate is not valid.');
         }
 
@@ -74,22 +69,16 @@ class X509
 
         return $certificate;
     }
-    
+
     /**
      * Method called after certificate has been checked and it's valid
-     * @param Request $request
-     * @param Closure $next
-     * @param ClientCertificate $certificate
-     * @param string|null $guard
-     * @return Request
      */
     protected function postValidate(
         Request $request,
         Closure $next,
         ClientCertificate $certificate,
         ?string $guard = null
-    ): Request
-    {
+    ): Request {
         $autoLogin = config('x509-auth.middleware.auto_login');
         if ($autoLogin) {
             $this->authFactory->guard($guard)->login(
@@ -97,11 +86,11 @@ class X509
                 true
             );
         }
+
         return $request;
     }
 
     /**
-     * @param ClientCertificate $certificate
      * @return mixed
      */
     protected function getUserByCertificate(ClientCertificate $certificate)
@@ -109,16 +98,16 @@ class X509
         $rules = config('x509-auth.middleware.rules');
         $userClass = config('x509-auth.user_class');
         $userQuery = (new $userClass);
-        foreach($rules as $certificateKey => $userField)
-        {
-            if (!$certificate->has($certificateKey)) {
+        foreach ($rules as $certificateKey => $userField) {
+            if (! $certificate->has($certificateKey)) {
                 throw new InvalidClientCertificateException("Certificate missing \"$certificateKey\" key.");
             }
             $userQuery = $userQuery->where($userField, '=', $certificate->get($certificateKey));
         }
-        if (!(($user = $userQuery->first()) && $user instanceof $userClass)) {
-            throw new InvalidClientCertificateException("Certificate does not match any user.");
+        if (! (($user = $userQuery->first()) && $user instanceof $userClass)) {
+            throw new InvalidClientCertificateException('Certificate does not match any user.');
         }
+
         return $user;
     }
 }

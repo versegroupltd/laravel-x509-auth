@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Kerattila\X509Auth\Console;
 
 use Illuminate\Console\Command;
@@ -13,8 +15,8 @@ class GenerateSignedCertificate extends Command
      *
      * @var string
      */
-    protected $signature = 'x509auth:generate:signed-certificate {--dir=} {--private=} {--public=} ' .
-                            '{--csr=} {--root-private=} {--root-public=} {--email=} {--numbits=} {--days=}';
+    protected $signature = 'x509auth:generate:signed-certificate {--dir=} {--private=} {--public=} '.
+        '{--csr=} {--root-private=} {--root-public=} {--email=} {--numbits=} {--days=}';
 
     /**
      * The console command description.
@@ -37,14 +39,14 @@ class GenerateSignedCertificate extends Command
         $numbits = $this->option('numbits') ?? config('x509-auth.signed_cert.numbits');
         $days = $this->option('days') ?? config('x509-auth.signed_cert.days');
 
-        $rootPrivate = $this->option('root-private') ?? (config('x509-auth.root_ca.private_key_name') . '.key.pem');
-        $rootPublic = $this->option('root-public') ?? (config('x509-auth.root_ca.public_key_name') . '.crt.pem');
+        $rootPrivate = $this->option('root-private') ?? (config('x509-auth.root_ca.private_key_name').'.key.pem');
+        $rootPublic = $this->option('root-public') ?? (config('x509-auth.root_ca.public_key_name').'.crt.pem');
 
         $subject = array_replace(config('x509-auth.signed_cert.subject'), [
-            'emailAddress' => $this->option('email') ?? config('x509-auth.signed_cert.subject.emailAddress')
+            'emailAddress' => $this->option('email') ?? config('x509-auth.signed_cert.subject.emailAddress'),
         ]);
 
-        $password = (string)$this->secret('Type a password for the PKCS12 certificate:');
+        $password = (string) $this->secret('Type a password for the PKCS12 certificate:');
         (new SignedCertificateGenerator(
             $dir,
             $rootPrivate,
