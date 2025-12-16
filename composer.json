@@ -1,6 +1,7 @@
 {
     "name": "kerattila/laravel-x509-auth",
     "description": "X509 Authentication integration for Laravel.",
+    "version": "2.0.0",
     "type": "library",
     "license": "MIT",
     "require": {
