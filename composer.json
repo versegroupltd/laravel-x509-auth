@@ -4,7 +4,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": ">=8.2",
         "ext-openssl": "*",
         "illuminate/support": "^11.0|^12.0"
     },
@@ -50,7 +50,7 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit",
+        "test": "vendor/bin/pest",
         "format": "vendor/bin/pint",
         "refactor": "vendor/bin/rector process"
     }
