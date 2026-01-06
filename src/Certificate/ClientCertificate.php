@@ -80,13 +80,13 @@ class ClientCertificate
         return null;
     }
 
-    public function has($key): ?string
+    public function has($key): bool
     {
         if (in_array($key, $this->keys)) {
-            return isset($this->$key) && ! is_null($this->$key);
+            return isset($this->$key);
         }
 
-        return null;
+        return false;
     }
 
     public function isValid(): bool
